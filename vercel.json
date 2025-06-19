@@ -8,4 +8,11 @@
       { "src": "/(.*)", "dest": "/index.html" }
     ]
   }
+  {
+    "rewrites": [
+      { "source": "/", "destination": "/index.html" },
+      { "source": "/script.js", "destination": "/script.js" },
+      { "source": "/style.css", "destination": "/style.css" }
+    ]
+  }
   
