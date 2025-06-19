@@ -57,10 +57,10 @@ btn.addEventListener("click", async () => {
   const userText = input.value.trim();
   if (!userText) return;
 
-  const userMsg = document.createElement("div");
-  userMsg.className = "user-msg";
-  userMsg.textContent = userText;
-  response.appendChild(userMsg);
+  // log에 push는 여기서만!
+  conversationLog.push({ role: "user", text: userText });
+
+  renderLog();
 
   const botReplyBox = document.createElement("div");
   botReplyBox.className = "response waiting";
@@ -78,8 +78,7 @@ btn.addEventListener("click", async () => {
             role: "system",
             content: "너는 핑핑이라는 감정 기반 병맛 챗봇이야. 인사이드 아웃 감정 테마를 기반으로 한 시니컬하고 짧은 대답을 해."
           },
-          ...conversationLog.map(c => ({ role: c.role, content: c.text })),
-          { role: "user", content: userText }
+          ...conversationLog
         ]
       })
     });
@@ -87,7 +86,6 @@ btn.addEventListener("click", async () => {
     const data = await res.json();
     const gptReply = data.choices?.[0]?.message?.content?.trim() || "⚠️ 응답 없음. 콘솔 확인 ㄱ";
 
-    conversationLog.push({ role: "user", text: userText });
     conversationLog.push({ role: "assistant", text: `핑핑봇: ${gptReply}` });
     localStorage.setItem("pingpingLog", JSON.stringify(conversationLog));
     renderLog();
