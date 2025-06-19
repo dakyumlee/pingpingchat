@@ -1,13 +1,13 @@
+// script.js
 const input = document.getElementById("userInput");
 const btn = document.getElementById("submitBtn");
 const response = document.getElementById("botResponse");
 const moodBox = document.getElementById("pingpingMood");
 const clearBtn = document.getElementById("clearBtn");
 const themeSelect = document.getElementById("themeSelect");
-
 const endpoint = "/api/pingping";
 
-let conversationLog = JSON.parse(localStorage.getItem("pingpingLog") || "[]");
+let conversationLog = [];
 
 const emotions = [
   { mood: "😄 Joy", theme: "joy" },
@@ -33,23 +33,18 @@ function setRandomTheme() {
 
 themeSelect.addEventListener("change", () => {
   const selected = themeSelect.value;
-  if (selected === "random") {
-    setRandomTheme();
-  } else {
-    applyTheme(selected);
-  }
+  if (selected === "random") setRandomTheme();
+  else applyTheme(selected);
 });
-
-setRandomTheme();
 
 function renderLog() {
   response.innerHTML = "";
-  for (const { role, text } of conversationLog) {
+  conversationLog.forEach(({ role, text }) => {
     const msg = document.createElement("div");
     msg.className = role === "user" ? "user-msg" : "response";
     msg.textContent = text;
     response.appendChild(msg);
-  }
+  });
   response.scrollTop = response.scrollHeight;
 }
 
@@ -57,16 +52,8 @@ btn.addEventListener("click", async () => {
   const userText = input.value.trim();
   if (!userText) return;
 
-  // log에 push는 여기서만!
   conversationLog.push({ role: "user", text: userText });
-
   renderLog();
-
-  const botReplyBox = document.createElement("div");
-  botReplyBox.className = "response waiting";
-  botReplyBox.textContent = "핑핑봇: ...생각 중...";
-  response.appendChild(botReplyBox);
-  response.scrollTop = response.scrollHeight;
 
   try {
     const res = await fetch(endpoint, {
@@ -74,24 +61,20 @@ btn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         messages: [
-          {
-            role: "system",
-            content: "너는 핑핑이라는 감정 기반 병맛 챗봇이야. 인사이드 아웃 감정 테마를 기반으로 한 시니컬하고 짧은 대답을 해."
-          },
-          ...conversationLog
-        ]
-      })
+          { role: "system", content: "너는 병맛 챗봇 핑핑이야. 짧고 시니컬하게 대답해." },
+          ...conversationLog.map(({ role, text }) => ({ role, content: text })),
+        ],
+      }),
     });
 
     const data = await res.json();
-    const gptReply = data.choices?.[0]?.message?.content?.trim() || "⚠️ 응답 없음. 콘솔 확인 ㄱ";
-
-    conversationLog.push({ role: "assistant", text: `핑핑봇: ${gptReply}` });
-    localStorage.setItem("pingpingLog", JSON.stringify(conversationLog));
+    const reply = data.choices?.[0]?.message?.content?.trim() || "⚠️ 응답 없음. 콘솔 확인 ㄱ";
+    conversationLog.push({ role: "assistant", text: `핑핑봇: ${reply}` });
     renderLog();
   } catch (err) {
-    botReplyBox.textContent = "❌ 서버가 응답하지 않음";
     console.error("🔥 fetch 실패:", err);
+    conversationLog.push({ role: "assistant", text: "❌ 서버가 응답하지 않음" });
+    renderLog();
   }
 
   input.value = "";
@@ -103,6 +86,7 @@ input.addEventListener("keydown", (e) => {
 
 clearBtn.addEventListener("click", () => {
   conversationLog = [];
-  localStorage.removeItem("pingpingLog");
   renderLog();
 });
+
+setRandomTheme();

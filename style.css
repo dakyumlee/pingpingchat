@@ -7,54 +7,88 @@
 
 body {
   font-family: 'YoonChildfundkoreaManSeh';
+  background-color: #fffbe7;
   margin: 0;
   padding: 0;
-  background: #fffbe6;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 100vh;
 }
 
-.chatbox {
+.container {
   background: white;
   padding: 2rem;
-  border-radius: 10px;
-  width: 400px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+h1 {
+  margin-top: 0;
 }
 
 #botResponse {
-  margin: 1rem 0;
-  height: 300px;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
-}
-
-.user-msg, .response {
-  padding: 0.5rem 1rem;
-  border-radius: 15px;
-  max-width: 80%;
-  margin-bottom: 0.5rem;
+  gap: 6px;
+  padding: 10px;
+  overflow-y: auto;
+  height: 320px;
+  background: white;
+  border-radius: 8px;
 }
 
 .user-msg {
   align-self: flex-end;
-  background: #d6ecff;
+  background: #cde4f7;
+  padding: 8px 12px;
+  border-radius: 16px;
+  max-width: 75%;
+  font-size: 14px;
+  line-height: 1.4;
 }
+
 
 .response {
   align-self: flex-start;
-  background: #eee;
+  background: #eeeeee;
+  padding: 8px 12px;
+  border-radius: 16px;
+  max-width: 75%;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.response.waiting {
+  font-style: italic;
+  color: gray;
+}
+
+
+input[type="text"] {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 button {
-  margin-left: 5px;
+  padding: 0.5rem;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.joy { background: #fff9e6; }
-.sadness { background: #e6e6ff; }
-.anger { background: #ffe6e6; }
-.disgust { background: #e6ffe6; }
-.fear { background: #f3e6ff; }
+button:hover {
+  background-color: #222;
+}
+
+.joy { background-color: #fff8dc; }
+.sadness { background-color: #e0eaff; }
+.anger { background-color: #ffe0e0; }
+.disgust { background-color: #e0ffe0; }
+.fear { background-color: #f3e0ff; }
