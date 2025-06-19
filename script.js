@@ -5,7 +5,7 @@ const moodBox = document.getElementById("pingpingMood");
 const clearBtn = document.getElementById("clearBtn");
 const themeSelect = document.getElementById("themeSelect");
 
-const endpoint = "/api/pingping";
+const endpoint = "/pingping";
 
 
 

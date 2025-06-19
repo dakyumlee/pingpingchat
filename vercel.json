@@ -1,10 +1,10 @@
 {
     "builds": [
-      { "src": "api/**/*.js", "use": "@vercel/node" },
+      { "src": "api/pingping.js", "use": "@vercel/node" },
       { "src": "index.html", "use": "@vercel/static" }
     ],
     "routes": [
-      { "src": "/api/(.*)", "dest": "/api/$1.js" },
+      { "src": "/api/pingping", "dest": "/api/pingping.js" },
       { "src": "/(.*)", "dest": "/index.html" }
     ]
   }
