@@ -56,18 +56,13 @@ btn.addEventListener("click", async () => {
   const userText = input.value.trim();
   if (!userText) return;
 
-  // 사용자 메시지 직접 DOM에 추가
-  const userMsg = document.createElement("div");
-  userMsg.className = "user-msg";
-  userMsg.textContent = userText;
-  response.appendChild(userMsg);
-
   conversationLog.push({ role: "user", text: userText });
+  renderLog();
 
-  // 대기 메시지
   const botReplyBox = document.createElement("div");
   botReplyBox.className = "response waiting";
   botReplyBox.textContent = "핑핑봇: ...생각 중...";
+  response.appendChild(botReplyBox);
   response.scrollTop = response.scrollHeight;
 
   try {
@@ -86,12 +81,11 @@ btn.addEventListener("click", async () => {
     });
 
     const data = await res.json();
-    const gptReply = data.choices?.[0]?.message?.content?.trim() || "너랑 말 안 할래";
+    const gptReply = data.choices?.[0]?.message?.content?.trim() || "⚠️ 핑핑 응답 이상함. 콘솔 확인 ㄱ";
 
     conversationLog.push({ role: "assistant", text: `핑핑봇: ${gptReply}` });
     localStorage.setItem("pingpingLog", JSON.stringify(conversationLog));
-
-    botReplyBox.textContent = `핑핑봇: ${gptReply}`;
+    renderLog();
   } catch (err) {
     botReplyBox.textContent = "❌ 서버가 응답하지 않음";
     console.error("🔥 fetch 실패:", err);

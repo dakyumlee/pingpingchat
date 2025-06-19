@@ -14,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post("/pingping", async (req, res) => {
-  const messages = req.body.messages;
+  const { messages } = req.body;
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -22,23 +22,19 @@ app.post("/pingping", async (req, res) => {
       headers: {
         "x-api-key": API_KEY,
         "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         model: "claude-3-5-sonnet-20240620",
         max_tokens: 1024,
-        messages
-      })
+        messages,
+      }),
     });
 
     const data = await response.json();
-    console.log("📡 Claude 응답:", JSON.stringify(data, null, 2));
+    const reply = data.content?.[0]?.text || "⚠️ 응답 없음. 콘솔 확인 ㄱ";
 
-    const reply = data?.content?.[0]?.text?.trim() || "응답 없음.";
-
-    res.json({
-      reply: reply
-    });
+    res.status(200).json({ choices: [{ message: { content: reply } }] });
   } catch (err) {
     console.error("🔥 Claude API 실패:", err);
     res.status(500).json({ error: "Claude API 요청 실패" });
@@ -46,5 +42,5 @@ app.post("/pingping", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`로컬 서버 실행중 👉 http://localhost:${PORT}`);
+  console.log(`🚀 핑핑 로컬 서버 실행 중 👉 http://localhost:${PORT}`);
 });
