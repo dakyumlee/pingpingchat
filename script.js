@@ -5,9 +5,7 @@ const moodBox = document.getElementById("pingpingMood");
 const clearBtn = document.getElementById("clearBtn");
 const themeSelect = document.getElementById("themeSelect");
 
-const endpoint = "/pingping";
-
-
+const endpoint = "https://pingpingproxy.onrender.com/pingping";
 
 let conversationLog = JSON.parse(localStorage.getItem("pingpingLog") || "[]");
 
@@ -84,18 +82,15 @@ btn.addEventListener("click", async () => {
     });
 
     const data = await res.json();
-    if (!data.choices || !data.choices[0]) {
-      botReplyBox.textContent = "⚠️ 핑핑 응답 이상함. 콘솔 확인 ㄱ";
-      return;
-    }
 
-    const gptReply = data.choices[0].message.content.trim();
+    const gptReply = data.reply?.trim() || "⚠️ 핑핑 응답 이상함. 콘솔 확인 ㄱ";
+
     conversationLog.push({ role: "assistant", text: `핑핑봇: ${gptReply}` });
     localStorage.setItem("pingpingLog", JSON.stringify(conversationLog));
     renderLog();
   } catch (err) {
-    botReplyBox.textContent = "니 말이 너무 얼탱없어서 대답 안 할래";
-    console.error(err);
+    botReplyBox.textContent = "❌ 서버가 응답하지 않음";
+    console.error("🔥 fetch 실패:", err);
   }
 
   input.value = "";

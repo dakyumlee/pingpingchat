@@ -1,27 +1,17 @@
-import dotenv from "dotenv";
 import fetch from "node-fetch";
-
-dotenv.config();
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   const messages = req.body.messages;
-
-  const claudeMessages = messages.map(msg => ({
-    role: msg.role,
-    content: msg.content
-  }));
+  const claudeMessages = messages.map(m => ({ role: m.role, content: m.content }));
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return res.status(500).json({ error: "API KEY missing" });
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        "x-api-key": ANTHROPIC_API_KEY,
+        "x-api-key": key,
         "anthropic-version": "2023-06-01",
         "Content-Type": "application/json"
       },
@@ -31,14 +21,11 @@ export default async function handler(req, res) {
         messages: claudeMessages
       })
     });
-
-    const data = await response.json();
-    console.log("📡 Claude 응답:", JSON.stringify(data, null, 2));
-
-    const reply = data.content?.[0]?.text || "응답 이상함. 콘솔 확인 ㄱ";
-    res.status(200).json({ choices: [{ message: { content: reply } }] });
-  } catch (err) {
-    console.error("🔥 Claude API 요청 실패:", err);
-    res.status(500).json({ error: "Claude API 요청 실패" });
+    const data = await r.json();
+    const reply = data.content?.[0]?.text || "응답 이상";
+    return res.json({ choices: [{ message: { content: reply }}] });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: "API 요청 실패" });
   }
 }
