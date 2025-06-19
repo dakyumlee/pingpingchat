@@ -1,18 +1,11 @@
 {
     "builds": [
-      { "src": "api/**/*.js", "use": "@vercel/node" },
+      { "src": "api/pingping.js", "use": "@vercel/node" },
       { "src": "index.html", "use": "@vercel/static" }
     ],
     "routes": [
-      { "src": "/pingping", "dest": "/api/pingping.js" },
+      { "src": "/api/(.*)", "dest": "/api/pingping.js" },
       { "src": "/(.*)", "dest": "/index.html" }
-    ]
-  }
-  {
-    "rewrites": [
-      { "source": "/", "destination": "/index.html" },
-      { "source": "/script.js", "destination": "/script.js" },
-      { "source": "/style.css", "destination": "/style.css" }
     ]
   }
   
