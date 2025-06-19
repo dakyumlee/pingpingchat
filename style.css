@@ -1,0 +1,103 @@
+@font-face {
+    font-family: 'HS-Regular';
+    src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/HS-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'HS-Regular';
+    background-color: #f0f0f0;
+  }
+  
+  .chat-container {
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+  }
+  
+  .chat-header {
+    padding: 15px;
+    background-color: #ffd54f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .user-msg, .response {
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 80%;
+  }
+  
+  .user-msg {
+    background: #90caf9;
+    align-self: flex-end;
+    color: #000;
+  }
+  
+  .response {
+    align-self: flex-start;
+    background: #eeeeee;
+    color: #333;
+  }
+  
+  .chat-footer {
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chat-footer input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  .chat-footer button {
+    padding: 10px 15px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  /* 감정별 테마 */
+  body.joy .chat-header { background: #fff176; }
+  body.sadness .chat-header { background: #64b5f6; }
+  body.anger .chat-header { background: #ef5350; }
+  body.fear .chat-header { background: #9575cd; }
+  body.disgust .chat-header { background: #81c784; }
+  
+  @media (max-width: 768px) {
+    .chat-container {
+      margin: 0;
+      height: 100vh;
+      border-radius: 0;
+    }
+  }
+  

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>핑핑봇 (Inside Out Ver.)</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1>핑핑이에게 고민을 털어놓아봅시다</h1>
+      <select id="emotionSelect">
+        <option value="joy">🤩 Joy</option>
+        <option value="sadness">😭 Sadness</option>
+        <option value="anger">😡 Anger</option>
+        <option value="fear">😱 Fear</option>
+        <option value="disgust">🤢 Disgust</option>
+      </select>
+    </header>
+    <div id="botResponse" class="chat-body"></div>
+    <footer class="chat-footer">
+      <input type="text" id="userInput" placeholder="핑핑에게 말 걸기" />
+      <button id="submitBtn">전송</button>
+        <button id="resetBtn">초기화</button>     
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
