@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'HakgyoansimGeurimilgiTTF-R';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimGeurimilgiTTF-R.woff2') format('woff2');
+  font-family: 'YoonChildfundkoreaManSeh';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/YoonChildfundkoreaManSeh.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -20,7 +20,7 @@
 
 body {
   margin: 0;
-  font-family: 'HakgyoansimGeurimilgiTTF-R', sans-serif;
+  font-family: 'YoonChildfundkoreaManSeh';
   background: var(--joy-bg);
   color: var(--joy-text);
   transition: background 0.3s, color 0.3s;
@@ -108,9 +108,9 @@ button {
   word-break: break-word;
 }
 
-.waiting {
+/* .waiting {
   font-style: italic;
-}
+} */
 
 body.joy     { background: var(--joy-bg); color: var(--joy-text); }
 body.anger   { background: var(--anger-bg); color: var(--anger-text); }
