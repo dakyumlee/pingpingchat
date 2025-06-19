@@ -68,7 +68,6 @@ btn.addEventListener("click", async () => {
   const botReplyBox = document.createElement("div");
   botReplyBox.className = "response waiting";
   botReplyBox.textContent = "핑핑봇: ...생각 중...";
-  response.appendChild(botReplyBox);
   response.scrollTop = response.scrollHeight;
 
   try {
