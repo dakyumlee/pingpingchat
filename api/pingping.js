@@ -24,11 +24,9 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    const reply = data.content?.[0]?.text || "너랑 말 안 할래";
+    const reply = data?.choices?.[0]?.message?.content || "응답 없음";
 
-    res.status(200).json({
-      choices: [{ message: { content: reply } }]
-    });
+    res.status(200).json({ reply });
   } catch (err) {
     console.error("🔥 Claude API 실패:", err);
     res.status(500).json({ error: "Claude API 요청 실패" });

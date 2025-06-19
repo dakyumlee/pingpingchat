@@ -1,15 +1,14 @@
 {
-    "builds": [
-      { "src": "api/pingping.js", "use": "@vercel/node" },
-      { "src": "index.html", "use": "@vercel/static" },
-      { "src": "style.css", "use": "@vercel/static" },
-      { "src": "script.js", "use": "@vercel/static" }
-    ],
-    "routes": [
-      { "src": "/api/(.*)", "dest": "/api/pingping.js" },
-      { "src": "/style.css", "dest": "/style.css" },
-      { "src": "/script.js", "dest": "/script.js" },
-      { "src": "/(.*)", "dest": "/index.html" }
-    ]
-  }
-  
+  "builds": [
+    { "src": "api/pingping.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "style.css", "use": "@vercel/static" },
+    { "src": "script.js", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/pingping.js" },
+    { "src": "/style.css", "dest": "/style.css" },
+    { "src": "/script.js", "dest": "/script.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
