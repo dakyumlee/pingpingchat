@@ -5,7 +5,7 @@ const moodBox = document.getElementById("pingpingMood");
 const clearBtn = document.getElementById("clearBtn");
 const themeSelect = document.getElementById("themeSelect");
 
-const endpoint = "https://pingpingproxy.onrender.com/pingping";
+const endpoint = "/api/pingping";
 
 let conversationLog = JSON.parse(localStorage.getItem("pingpingLog") || "[]");
 
