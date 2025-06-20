@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-3.5",
+        model: "claude-3-5-sonnet-20240620", 
         system,                   
         messages,                   
         max_tokens_to_sample: 1024, 
