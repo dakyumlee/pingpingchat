@@ -38,30 +38,25 @@ const personaPrompts = {
 };
 
 async function sendToClaude(userMessages) {
+
   const key = document.getElementById("themeSelect").value;
-  const systemMsg = {
-    role: "system",
-    content: personaPrompts[key] || personaPrompts.random
-  };
-  const full = [systemMsg, ...userMessages];
+  const system = personaPrompts[key] || personaPrompts.random;
 
   const res = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages: full })
+    body: JSON.stringify({
+      system,
+      messages: userMessages
+    })
   });
-
   if (!res.ok) {
-    
+
     let errText;
-    try {
-      errText = (await res.json()).error;
-    } catch {
-      errText = await res.text();
-    }
+    try { errText = (await res.json()).error }
+    catch { errText = await res.text() }
     throw new Error(errText || `HTTP ${res.status}`);
   }
-
   const { reply } = await res.json();
   return reply;
 }
@@ -94,13 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   updateMood(themeSelect.value);
-
-  themeSelect.addEventListener("change", () => {
-    updateMood(themeSelect.value);
-  });
-  clearBtn.addEventListener("click", () => {
-    botBox.innerHTML = "";
-  });
+  themeSelect.addEventListener("change", () => updateMood(themeSelect.value));
+  clearBtn.addEventListener("click", () => { botBox.innerHTML = "" });
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
@@ -115,9 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
     appendMessage("user", text);
     userInput.value = "";
 
-    const old = botBox.querySelector(".bot-message.loading");
-    if (old) old.remove();
-
+    const prev = botBox.querySelector(".bot-message.loading");
+    if (prev) prev.remove();
     const loadingDiv = appendMessage("bot", "…응답 대기 중");
     loadingDiv.classList.add("loading");
 
