@@ -1,5 +1,3 @@
-
-
 import dotenv from "dotenv";
 import fetch from "node-fetch";
 
@@ -13,7 +11,7 @@ export default async function handler(req, res) {
   const { system, messages } = req.body;
   const API_KEY = process.env.ANTHROPIC_API_KEY;
   if (!API_KEY) {
-    console.error("❌ Missing ANTHROPIC_API_KEY");
+    console.error("Missing ANTHROPIC_API_KEY");
     return res.status(500).json({ error: "Server misconfiguration" });
   }
 
@@ -27,9 +25,9 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "claude-3-5-sonnet-20240620",
-        system,                    
-        messages,                   
-        max_tokens_to_sample: 1024 
+        system,               
+        messages,             
+        max_tokens: 1024,    
       }),
     });
 
@@ -40,7 +38,7 @@ export default async function handler(req, res) {
     }
 
     const data = await apiRes.json();
-    const reply = data.completion; 
+    const reply = data.completion;
     return res.status(200).json({ reply });
 
   } catch (err) {
