@@ -6,89 +6,63 @@
 }
 
 body {
+  margin: 0; padding: 0;
   font-family: 'YoonChildfundkoreaManSeh';
-  background-color: #fffbe7;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.container {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 400px;
-}
-
-h1 {
-  margin-top: 0;
+  transition: background-color 0.3s;
 }
 
 #botResponse {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px;
-  overflow-y: auto;
-  height: 320px;
-  background: white;
-  border-radius: 8px;
+  max-height: 60vh; overflow-y: auto;
+  padding: 1rem; background: #fafafa;
+  border-radius: 8px; margin-bottom: 1rem;
+  display: flex; flex-direction: column;
+}
+
+.user-msg, .response {
+  max-width: 70%;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  margin: 0.3rem 0;
+  word-break: break-word;
 }
 
 .user-msg {
+  background: #d0eaff;
   align-self: flex-end;
-  background: #cde4f7;
-  padding: 8px 12px;
-  border-radius: 16px;
-  max-width: 75%;
-  font-size: 14px;
-  line-height: 1.4;
 }
 
-
 .response {
+  background: #e6e6e6;
   align-self: flex-start;
-  background: #eeeeee;
-  padding: 8px 12px;
-  border-radius: 16px;
-  max-width: 75%;
-  font-size: 14px;
-  line-height: 1.4;
 }
 
 .response.waiting {
   font-style: italic;
-  color: gray;
+  opacity: 0.7;
 }
 
 
-input[type="text"] {
-  flex: 1;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+body.joy {
+  background-color: #fff3cd;
+  color: #333;
 }
 
-button {
-  padding: 0.5rem;
-  border: none;
-  background-color: #444;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
+body.sadness {
+  background-color: #d1ecf1;
+  color: #0c5460;
 }
 
-button:hover {
-  background-color: #222;
+body.anger {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
-.joy { background-color: #fff8dc; }
-.sadness { background-color: #e0eaff; }
-.anger { background-color: #ffe0e0; }
-.disgust { background-color: #e0ffe0; }
-.fear { background-color: #f3e0ff; }
+body.disgust {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+body.fear {
+  background-color: #ececec;
+  color: #343a40;
+}

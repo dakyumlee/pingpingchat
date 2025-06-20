@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>핑핑</title>
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="joy">
-  <div class="container">
+<body>
+  <div class="chat-container">
     <h1>핑핑</h1>
-    <p id="pingpingMood">오늘 핑핑이의 감정 상태: 로딩 중...</p>
+    <div id="pingpingMood">오늘 핑핑이의 감정 상태: 로딩 중...</div>
     <select id="themeSelect">
       <option value="random">어떤 핑핑이랑 얘기할까?</option>
       <option value="joy">😄 Joy</option>
@@ -18,13 +18,11 @@
       <option value="disgust">🤢 Disgust</option>
       <option value="fear">😱 Fear</option>
     </select>
-    <div id="botResponse"></div>
-    <div class="input-row">
-      <input type="text" id="userInput" placeholder="무슨 말이든 해봐!" />
-      <button id="submitBtn">전송</button>
-      <button id="clearBtn">초기화</button>
-    </div>
+    <div id="botResponse" class="response-box"></div>
+    <input id="userInput" placeholder="무슨 말이든 해봐!" />
+    <button id="submitBtn">전송</button>
+    <button id="clearBtn">초기화</button>
   </div>
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
