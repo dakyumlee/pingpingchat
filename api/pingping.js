@@ -1,7 +1,3 @@
-const API_KEY = process.env.ANTHROPIC_API_KEY;
-console.log("API_KEY exists:", !!API_KEY);
-console.log("API_KEY length:", API_KEY?.length);
-
 export default async function handler(req, res) {
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method Not Allowed" });
@@ -18,7 +14,7 @@ export default async function handler(req, res) {
       const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${API_KEY}`,
+          "x-api-key": API_KEY,
           "Content-Type": "application/json",
           "anthropic-version": "2023-06-01"
         },
@@ -45,4 +41,3 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Claude API 요청 실패" });
     }
   }
-  
