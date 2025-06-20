@@ -5,133 +5,78 @@
   font-style: normal;
 }
 
-body {
-  font-family: 'YoonChildfundkoreaManSeh';
-  transition: background-color 0.3s ease;
-  margin: 0;
-  padding: 0;
-}
 
+body {
+  margin: 0;
+  padding: 40px;
+  font-family: 'YoonChildfundkoreaManSeh';
+  background: #fafafa;
+}
 .container {
-  width: 100%;
-  max-width: 480px;
-  margin: 50px auto;
-  background: white;
-  border-radius: 10px;
+  width: 600px;
+  margin: 0 auto;
   padding: 20px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+h1 {
+  margin-top: 0;
+  font-size: 32px;
+}
+#pingpingMood {
+  margin: 8px 0;
+  font-size: 16px;
+}
+#themeSelect {
+  font-size: 14px;
+  padding: 4px 8px;
 }
 
 .chat-box {
-  height: 300px;
+  height: 400px;
+  margin: 16px 0;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
   overflow-y: auto;
-  padding: 10px;
-  margin: 10px 0;
-  background: #f9f9f9;
 }
-.user-msg {
-  background: #d0ecff;
-  text-align: right;
-  margin: 5px 0;
-  padding: 8px;
-  border-radius: 10px;
-  display: block;
-  width: fit-content;
-  margin-left: auto;
-}
-.bot-msg {
-  background: #eee;
-  text-align: left;
-  margin: 5px 0;
-  padding: 8px;
-  border-radius: 10px;
-  display: block;
-  width: fit-content;
-  margin-right: auto;
-}
+
 .input-area {
   display: flex;
-  gap: 5px;
+  gap: 8px;
 }
-input[type="text"] {
+#userInput {
   flex: 1;
   padding: 8px;
+  font-size: 14px;
 }
-button {
-  padding: 8px 10px;
-  font-family: 'YoonChildfundkoreaManSeh';
-}
-.joy { background-color: #fff7cc; }
-.sadness { background-color: #d0e7ff; }
-.anger { background-color: #ffd0d0; }
-.disgust { background-color: #d0f2d0; }
-.fear { background-color: #ecdfff; }
-
-#botResponse {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow-y: auto;
-  padding: 12px;
-  background: #f9f9f9;
-  border-radius: 8px;
+#submitBtn, #clearBtn {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-.user-message,
-.bot-message {
-  max-width: 70%;
-  padding: 10px 14px;
-  border-radius: 16px;
-  line-height: 1.4;
-  word-break: break-word;
-}
-
-.user-message {
-  align-self: flex-end;
-  background: #dddddd;
-  color: #000;
-  border-bottom-right-radius: 4px;
-}
-
-.bot-message {
-  align-self: flex-start;
-  background: #e0e0e0;
-  color: #000;
-  border-bottom-left-radius: 4px;
-}
-
-.container.mood-joy    .bot-message { background: #fff369; }
-.container.mood-sadness .bot-message { background: #7cd5ff; }
-.container.mood-anger   .bot-message { background: #ff7c7c; }
-.container.mood-disgust .bot-message { background: #89ff89; }
-.container.mood-fear    .bot-message { background: #c38aff; }
-
-
-.container {
-  width: 800px;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 16px;
-  background-color: #fef8e5;
-}
 .message {
-  margin: 10px 0;
-  max-width: 70%;
   clear: both;
+  margin: 8px 0;
+  max-width: 70%;
 }
 .user-message {
   float: right;
   background: #e0e0e0;
   border-radius: 16px 16px 0 16px;
-  padding: 8px 12px;
 }
 .bot-message {
   float: left;
-  background: #ffd; 
+  background: #ffe;
   border-radius: 16px 16px 16px 0;
-  padding: 8px 12px;
 }
 .message-text {
-  margin: 0;
+  margin: 8px;
   font-size: 14px;
   line-height: 1.4;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }

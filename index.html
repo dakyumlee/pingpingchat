@@ -2,33 +2,30 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>핑핑봇</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>핑핑챗</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>핑핑</h1>
-    <div id="pingpingMood">오늘 핑핑이의 감정 상태: 로딩 중...</div>
+    <div id="pingpingMood">오늘 핑핑이의 감정 상태: 로딩...</div>
     <select id="themeSelect">
-      <option value="random">Random</option>
-      <option value="joy">Joy</option>
-      <option value="sadness">Sadness</option>
-      <option value="anger">Anger</option>
-      <option value="disgust">Disgust</option>
-      <option value="fear">Fear</option>
+      <option value="random">어떤 핑핑이랑 얘기할까?</option>
+      <option value="joy">😊 Joy</option>
+      <option value="sadness">😢 Sadness</option>
+      <option value="anger">😡 Anger</option>
+      <option value="disgust">🤢 Disgust</option>
+      <option value="fear">😨 Fear</option>
     </select>
+
     <div id="botResponse" class="chat-box"></div>
-    <form id="chat-form" class="input-area">
-      <input
-        type="text"
-        id="userInput"
-        placeholder="어떤 말이든 해봐!"
-        autocomplete="off"
-      />
-      <button type="submit" id="submitBtn">전송</button>
-      <button type="button" id="clearBtn">초기화</button>
-    </form>
+
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="어떤 말이든 해봐!" />
+      <button id="submitBtn">전송</button>
+      <button id="clearBtn">초기화</button>
+    </div>
   </div>
 
   <script src="script.js"></script>

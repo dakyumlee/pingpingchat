@@ -1,113 +1,116 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const themeSelect    = document.getElementById("themeSelect");
+  const pingpingMood   = document.getElementById("pingpingMood");
+  const chatBox        = document.getElementById("botResponse");
+  const userInput      = document.getElementById("userInput");
+  const submitBtn      = document.getElementById("submitBtn");
+  const clearBtn       = document.getElementById("clearBtn");
 
-  const themeSelect = document.getElementById("themeSelect");
-  const pingpingMood = document.getElementById("pingpingMood");
-  const chatBox = document.getElementById("botResponse");
-  const userInput = document.getElementById("userInput");
-  const submitBtn = document.getElementById("submitBtn");
-  const clearBtn = document.getElementById("clearBtn");
-
-  const conversation = [
-    {
-      role: "system",
-      content:
-        "당신은 친절하고 유머러스한 핑핑봇입니다. 사용자의 감정 상태에 맞춰 답해 주세요."
-    }
-  ];
+  const personaMap = {
+    random:  "너는 핑핑봇이야. 사용자가 어떤 감정이든 편안하게 이야기하도록 도와줘.",
+    joy:     "너는 지금 기쁨(Joy) 인격이야. 언제나 유쾌하고 흥겨운 톤으로 답해 줘.",
+    sadness: "너는 지금 슬픔(Sadness) 인격이야. 부드럽고 위로하는 톤으로 답해 줘.",
+    anger:   "너는 지금 분노(Anger) 인격이야. 직설적이고 터프한 톤으로 답해 줘.",
+    disgust: "너는 지금 혐오(Disgust) 인격이야. 살짝 비꼬고 재치 있게 답해 줘.",
+    fear:    "너는 지금 공포(Fear) 인격이야. 조심스럽고 신중한 톤으로 답해 줘."
+  };
 
 
   const colorMap = {
-    random: "#ffffff",
-    joy: "#FFF3B6",
-    sadness: "#CCE0FF",
-    anger: "#FFDACC",
-    disgust: "#E2FFE2",
-    fear: "#FFE2F7"
+    random:  "#f0f0f0",
+    joy:     "#fff7e6",
+    sadness: "#e6f0ff",
+    anger:   "#ffe6e6",
+    disgust: "#e6ffe6",
+    fear:    "#f7e6ff"
   };
   const moodMap = {
-    random: "로딩 중...",
-    joy: "Joy",
-    sadness: "Sadness",
-    anger: "Anger",
-    disgust: "Disgust",
-    fear: "Fear"
+    random:  "?",
+    joy:     "😊 JOY",
+    sadness: "😢 SADNESS",
+    anger:   "😡 ANGER",
+    disgust: "🤢 DISGUST",
+    fear:    "😨 FEAR"
   };
+
+  const conversation = [{
+    role: "system",
+    content: personaMap.random
+  }];
+
   function updateTheme(key) {
     pingpingMood.textContent = `오늘 핑핑이의 감정 상태: ${moodMap[key]}`;
-    document.querySelector(".container").style.backgroundColor =
-      colorMap[key];
+    document.querySelector(".container").style.backgroundColor = colorMap[key];
+    conversation[0].content = personaMap[key];
   }
   updateTheme(themeSelect.value);
-  themeSelect.addEventListener("change", () => {
-    updateTheme(themeSelect.value);
-  });
+  themeSelect.addEventListener("change", () => updateTheme(themeSelect.value));
 
-  function appendMessage(sender, text) {
+  let placeholderMsg = null;
+
+  function makeBubble(sender, text) {
     const wrap = document.createElement("div");
-    wrap.classList.add(sender === "user" ? "user-message" : "bot-message");
-    wrap.classList.add("message");
-
+    wrap.className = `message ${sender}-message`;
     const p = document.createElement("p");
-    p.classList.add("message-text");
+    p.className = "message-text";
     p.textContent = sender === "user" ? `너: ${text}` : `핑핑봇: ${text}`;
-
     wrap.appendChild(p);
-    chatBox.appendChild(wrap);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-  function updateLastBot(text) {
-    const bots = chatBox.querySelectorAll(".bot-message .message-text");
-    if (!bots.length) return;
-    bots[bots.length - 1].textContent = `핑핑봇: ${text}`;
-    chatBox.scrollTop = chatBox.scrollHeight;
+    return wrap;
   }
 
+  // Claude 호출
   async function sendToClaude(conv) {
     const res = await fetch("/api/pingping", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        system: conv[0].content,   
-        messages: conv.slice(1)   
+        system: conv[0].content,
+        messages: conv.slice(1)
       })
     });
-    if (!res.ok) throw new Error(`API 오류 ${res.status}`);
-    const { reply } = await res.json();
-    return reply;
+    const json = await res.json();
+    return json.reply;
   }
-
 
   async function handleSend() {
     const text = userInput.value.trim();
     if (!text) return;
 
-    appendMessage("user", text);
+    chatBox.appendChild(makeBubble("user", text));
+    conversation.push({ role: "user", content: text });
     userInput.value = "";
 
-    conversation.push({ role: "user", content: text });
-    appendMessage("bot", "⏳ 응답 대기중...");
+
+    placeholderMsg = makeBubble("bot", "⏳ 응답 대기중...");
+    chatBox.appendChild(placeholderMsg);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
       const reply = await sendToClaude(conversation);
       conversation.push({ role: "assistant", content: reply });
-      updateLastBot(reply ?? "⚠ 응답 없음");
-    } catch (e) {
-      console.error(e);
-      updateLastBot("❌ 서버가 응답하지 않음");
+
+      placeholderMsg.querySelector(".message-text").textContent = `핑핑봇: ${reply}`;
+      placeholderMsg = null;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    } catch (err) {
+      console.error(err);
+      placeholderMsg.querySelector(".message-text").textContent = "❌ 서버 응답 없음";
+      placeholderMsg = null;
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
   }
+
   submitBtn.addEventListener("click", handleSend);
-  userInput.addEventListener("keydown", (e) => {
+  userInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSend();
     }
   });
 
-
   clearBtn.addEventListener("click", () => {
     chatBox.innerHTML = "";
-    conversation.splice(1);
+    conversation.splice(1);      
     userInput.value = "";
     themeSelect.value = "random";
     updateTheme("random");
