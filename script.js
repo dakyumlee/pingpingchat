@@ -4,12 +4,11 @@ const endpoint = isLocal
   ? "http://localhost:3001/pingping"
   : "/api/pingping";
 
-
 const personaPrompts = {
   random: `
     너는 핑핑봇이야.
     반말만 사용해. 존댓말 금지.
-    짧고 직설적.
+    짧고 직설적으로 대답해.
   `,
   joy: `
     너는 '기쁨' 페르소나야.
@@ -19,7 +18,7 @@ const personaPrompts = {
   sadness: `
     너는 '슬픔' 페르소나야.
     반말만 사용해.
-    톤: 차분하고 위로해줘.
+    톤: 차분하고 공감해줘.
   `,
   anger: `
     너는 '분노' 페르소나야.
@@ -49,7 +48,7 @@ async function sendToClaude(userMessages) {
 
   const res = await fetch(endpoint, {
     method: "POST",
-    headers: {"Content-Type":"application/json"},
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ messages: full })
   });
   if (!res.ok) throw new Error(`Status ${res.status}`);
@@ -58,15 +57,15 @@ async function sendToClaude(userMessages) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form        = document.getElementById("chat-form");
-  const themeSelect = document.getElementById("themeSelect");
-  const pingpingMood= document.getElementById("pingpingMood");
-  const container   = document.querySelector(".container");
-  const botBox      = document.getElementById("botResponse");
-  const userInput   = document.getElementById("userInput");
-  const submitBtn   = document.getElementById("submitBtn");
-  const clearBtn    = document.getElementById("clearBtn");
 
+  const form         = document.getElementById("chat-form");
+  const themeSelect  = document.getElementById("themeSelect");
+  const pingpingMood = document.getElementById("pingpingMood");
+  const container    = document.querySelector(".container");
+  const botBox       = document.getElementById("botResponse");
+  const userInput    = document.getElementById("userInput");
+  const submitBtn    = document.getElementById("submitBtn");
+  const clearBtn     = document.getElementById("clearBtn");
 
   const moodMap = {
     random:  "어떤 핑핑이랑 얘기할까?",
@@ -85,16 +84,18 @@ document.addEventListener("DOMContentLoaded", () => {
     fear:    "#f2e6ff"
   };
 
+
   updateMood(themeSelect.value);
+
 
   themeSelect.addEventListener("change", () => {
     updateMood(themeSelect.value);
   });
 
+
   clearBtn.addEventListener("click", () => {
     botBox.innerHTML = "";
   });
-
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
@@ -109,19 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
     appendMessage("user", text);
     userInput.value = "";
 
-    const prev = botBox.querySelector(".bot-message.loading");
-    if (prev) prev.remove();
-    const botDiv = appendMessage("bot", "…응답 대기 중");
-    botDiv.classList.add("loading");
+    const prevLoad = botBox.querySelector(".bot-message.loading");
+    if (prevLoad) prevLoad.remove();
+
+    const loadingDiv = appendMessage("bot", "…응답 대기 중");
+    loadingDiv.classList.add("loading");
 
     try {
       const reply = await sendToClaude([{ role: "user", content: text }]);
-      botDiv.textContent = `핑핑봇: ${reply}`;
+      loadingDiv.textContent = `핑핑봇: ${reply}`;
     } catch (err) {
       console.error(err);
-      botDiv.textContent = `핑핑봇: ❌ 서버가 응답하지 않음`;
+      loadingDiv.textContent = `핑핑봇: ❌ 서버가 응답하지 않음`;
     } finally {
-      botDiv.classList.remove("loading");
+      loadingDiv.classList.remove("loading");
       submitBtn.disabled = false;
     }
   });
