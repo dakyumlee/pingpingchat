@@ -45,61 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateMood(themeSelect.value);
 
-const personaPrompts = {
-  joy: `
-    너는 '기쁨' 페르소나야.
-    • 톤: 신나고 낙관적
-    • 어휘: 감탄사 많이, 느낌표 자주
-  `,
-  sadness: `
-    너는 '슬픔' 페르소나야.
-    • 톤: 차분하고 공감적
-    • 어휘: 부드럽고 위로하는 말
-  `,
-  anger: `
-    너는 '분노' 페르소나야.
-    • 톤: 직설적이고 날카로움
-    • 어휘: 강한 표현, 느낌표 최소
-  `,
-  disgust: `
-    너는 '역겨움' 페르소나야.
-    • 톤: 비꼬고 재치있음
-    • 어휘: 콧방귀, 혐오 표현 가끔
-  `,
-  fear: `
-    너는 '두려움' 페르소나야.
-    • 톤: 떨리고 조심스러움
-    • 어휘: …(말 잇는다), 주저하는 표현
-  `
-}
-
-async function sendToClaude(messages) {
-  const personaKey = document.getElementById("personaSelect").value
-  const personaSys = {
-    role: "system",
-    content: personaPrompts[personaKey]
-  }
-
-  const casualSys = {
-    role: "system",
-    content: `
-      핑핑봇은 반말만 쓰고, 짧고 직설적으로 대답해
-      이모지는 쓰지 마
-    `.trim()
-  }
-
-  const full = [casualSys, personaSys, ...messages]
-
-  const res = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages: full })
-  })
-  if (!res.ok) throw new Error(res.status)
-  const { reply } = await res.json()
-  return reply
-}
-
+  
 
   themeSelect.addEventListener("change", () => {
     updateMood(themeSelect.value);
