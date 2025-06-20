@@ -8,75 +8,84 @@
 
 body {
   margin: 0;
-  padding: 40px;
   font-family: 'YoonChildfundkoreaManSeh';
   background: #fafafa;
 }
+
 .container {
-  width: 600px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 40px auto;
   padding: 20px;
   border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: #fffbea; /* 기본 Joy 테마 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
+
 h1 {
-  margin-top: 0;
-  font-size: 32px;
+  margin: 0 0 8px;
 }
+
 #pingpingMood {
-  margin: 8px 0;
-  font-size: 16px;
+  margin-bottom: 12px;
+  font-size: 1rem;
 }
+
 #themeSelect {
-  font-size: 14px;
-  padding: 4px 8px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
 }
 
 .chat-box {
-  height: 400px;
-  margin: 16px 0;
-  padding: 12px;
-  background: #f5f5f5;
-  border-radius: 8px;
+  margin: 20px 0;
+  height: 300px;
   overflow-y: auto;
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.user-message,
+.bot-message {
+  display: inline-block;
+  margin: 6px 0;
+  padding: 10px 14px;
+  border-radius: 16px;
+  line-height: 1.4;
+  max-width: 75%;
+  word-break: keep-all;
+}
+
+.user-message {
+  background: #ddd;
+  color: #333;
+  float: right;
+  clear: both;
+}
+
+.bot-message {
+  background: #fffbea;
+  color: #222;
+  float: left;
+  clear: both;
 }
 
 .input-area {
   display: flex;
   gap: 8px;
 }
+
 #userInput {
   flex: 1;
-  padding: 8px;
-  font-size: 14px;
-}
-#submitBtn, #clearBtn {
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
+  padding: 10px;
+  font-size: 1rem;
 }
 
-.message {
-  clear: both;
-  margin: 8px 0;
-  max-width: 70%;
+#submitBtn,
+#clearBtn {
+  padding: 0 16px;
+  font-size: 1rem;
 }
-.user-message {
-  float: right;
-  background: #e0e0e0;
-  border-radius: 16px 16px 0 16px;
-}
-.bot-message {
-  float: left;
-  background: #ffe;
-  border-radius: 16px 16px 16px 0;
-}
-.message-text {
-  margin: 8px;
-  font-size: 14px;
-  line-height: 1.4;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+
+button {
+  font-family: 'YoonChildfundkoreaManSeh';
 }
