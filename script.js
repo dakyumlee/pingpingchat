@@ -35,7 +35,6 @@ themeSelect.addEventListener("change", () => {
   themeSelect.value === "random" ? setRandomTheme() : applyTheme(themeSelect.value);
 });
 
-// 초기 테마 랜덤 설정
 setRandomTheme();
 
 function renderLog() {
