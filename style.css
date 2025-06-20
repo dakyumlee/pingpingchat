@@ -65,3 +65,44 @@ button {
 .anger { background-color: #ffd0d0; }
 .disgust { background-color: #d0f2d0; }
 .fear { background-color: #ecdfff; }
+
+#botResponse {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.user-message,
+.bot-message {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.user-message {
+  align-self: flex-end;
+  background: #dddddd;
+  color: #000;
+  border-bottom-right-radius: 4px;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background: #e0e0e0;
+  color: #000;
+  border-bottom-left-radius: 4px;
+}
+
+.container.mood-joy    .bot-message { background: #fff369; }
+.container.mood-sadness .bot-message { background: #7cd5ff; }
+.container.mood-anger   .bot-message { background: #ff7c7c; }
+.container.mood-disgust .bot-message { background: #89ff89; }
+.container.mood-fear    .bot-message { background: #c38aff; }
+
+
