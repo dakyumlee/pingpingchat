@@ -1,7 +1,9 @@
+
 const isLocal = ["localhost","127.0.0.1"].includes(window.location.hostname);
 const endpoint = isLocal
   ? "http://localhost:3001/pingping"
   : "/api/pingping";
+
 
 const personaPrompts = {
   random: `
@@ -36,6 +38,7 @@ const personaPrompts = {
   `
 };
 
+
 async function sendToClaude(userMessages) {
   const key = document.getElementById("themeSelect").value;
   const systemMsg = {
@@ -64,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn   = document.getElementById("submitBtn");
   const clearBtn    = document.getElementById("clearBtn");
 
+
   const moodMap = {
     random:  "어떤 핑핑이랑 얘기할까?",
     joy:     "😊 Joy",
@@ -73,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fear:    "😱 Fear"
   };
   const colorMap = {
-    random:  "#fff",
+    random:  "#ffffff",
     joy:     "#fff7e6",
     sadness: "#e6f7ff",
     anger:   "#ffe6e6",
@@ -82,19 +86,27 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   updateMood(themeSelect.value);
-  themeSelect.addEventListener("change", () => updateMood(themeSelect.value));
-  clearBtn.addEventListener("click", () => botBox.innerHTML = "");
+
+  themeSelect.addEventListener("change", () => {
+    updateMood(themeSelect.value);
+  });
+
+  clearBtn.addEventListener("click", () => {
+    botBox.innerHTML = "";
+  });
+
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
     submitBtn.disabled = true;
-    const txt = userInput.value.trim();
-    if (!txt) {
+
+    const text = userInput.value.trim();
+    if (!text) {
       submitBtn.disabled = false;
       return;
     }
 
-    appendMessage("user", txt);
+    appendMessage("user", text);
     userInput.value = "";
 
     const prev = botBox.querySelector(".bot-message.loading");
@@ -103,11 +115,11 @@ document.addEventListener("DOMContentLoaded", () => {
     botDiv.classList.add("loading");
 
     try {
-      const reply = await sendToClaude([{ role: "user", content: txt }]);
-      botDiv.textContent = `핑핑: ${reply}`;
+      const reply = await sendToClaude([{ role: "user", content: text }]);
+      botDiv.textContent = `핑핑봇: ${reply}`;
     } catch (err) {
       console.error(err);
-      botDiv.textContent = `핑핑: ❌ 서버가 응답하지 않음`;
+      botDiv.textContent = `핑핑봇: ❌ 서버가 응답하지 않음`;
     } finally {
       botDiv.classList.remove("loading");
       submitBtn.disabled = false;
@@ -126,9 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function appendMessage(who, msg) {
     const div = document.createElement("div");
-    div.className = who === "user"
-      ? "user-message"
-      : "bot-message";
+    div.className = who === "user" ? "user-message" : "bot-message";
     div.textContent = (who === "user" ? "너: " : "핑핑봇: ") + msg;
     botBox.append(div);
     div.scrollIntoView({ block: "end" });
