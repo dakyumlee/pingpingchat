@@ -37,7 +37,6 @@ const personaPrompts = {
   `
 };
 
-
 async function sendToClaude(userMessages) {
   const key = document.getElementById("themeSelect").value;
   const systemMsg = {
@@ -51,21 +50,31 @@ async function sendToClaude(userMessages) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ messages: full })
   });
-  if (!res.ok) throw new Error(`Status ${res.status}`);
+
+  if (!res.ok) {
+    
+    let errText;
+    try {
+      errText = (await res.json()).error;
+    } catch {
+      errText = await res.text();
+    }
+    throw new Error(errText || `HTTP ${res.status}`);
+  }
+
   const { reply } = await res.json();
   return reply;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  const form         = document.getElementById("chat-form");
-  const themeSelect  = document.getElementById("themeSelect");
-  const pingpingMood = document.getElementById("pingpingMood");
-  const container    = document.querySelector(".container");
-  const botBox       = document.getElementById("botResponse");
-  const userInput    = document.getElementById("userInput");
-  const submitBtn    = document.getElementById("submitBtn");
-  const clearBtn     = document.getElementById("clearBtn");
+  const form        = document.getElementById("chat-form");
+  const themeSelect = document.getElementById("themeSelect");
+  const pingpingMood= document.getElementById("pingpingMood");
+  const container   = document.querySelector(".container");
+  const botBox      = document.getElementById("botResponse");
+  const userInput   = document.getElementById("userInput");
+  const submitBtn   = document.getElementById("submitBtn");
+  const clearBtn    = document.getElementById("clearBtn");
 
   const moodMap = {
     random:  "어떤 핑핑이랑 얘기할까?",
@@ -84,15 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
     fear:    "#f2e6ff"
   };
 
-
   updateMood(themeSelect.value);
-
 
   themeSelect.addEventListener("change", () => {
     updateMood(themeSelect.value);
   });
-
-
   clearBtn.addEventListener("click", () => {
     botBox.innerHTML = "";
   });
@@ -110,8 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
     appendMessage("user", text);
     userInput.value = "";
 
-    const prevLoad = botBox.querySelector(".bot-message.loading");
-    if (prevLoad) prevLoad.remove();
+    const old = botBox.querySelector(".bot-message.loading");
+    if (old) old.remove();
 
     const loadingDiv = appendMessage("bot", "…응답 대기 중");
     loadingDiv.classList.add("loading");
@@ -121,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loadingDiv.textContent = `핑핑봇: ${reply}`;
     } catch (err) {
       console.error(err);
-      loadingDiv.textContent = `핑핑봇: ❌ 서버가 응답하지 않음`;
+      loadingDiv.textContent = `핑핑봇: ❌ ${err.message}`;
     } finally {
       loadingDiv.classList.remove("loading");
       submitBtn.disabled = false;
