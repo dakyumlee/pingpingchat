@@ -106,3 +106,32 @@ button {
 .container.mood-fear    .bot-message { background: #c38aff; }
 
 
+.container {
+  width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 16px;
+  background-color: #fef8e5;
+}
+.message {
+  margin: 10px 0;
+  max-width: 70%;
+  clear: both;
+}
+.user-message {
+  float: right;
+  background: #e0e0e0;
+  border-radius: 16px 16px 0 16px;
+  padding: 8px 12px;
+}
+.bot-message {
+  float: left;
+  background: #ffd; 
+  border-radius: 16px 16px 16px 0;
+  padding: 8px 12px;
+}
+.message-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}

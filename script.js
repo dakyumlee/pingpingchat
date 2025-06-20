@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  
+
   const themeSelect = document.getElementById("themeSelect");
   const pingpingMood = document.getElementById("pingpingMood");
   const chatBox = document.getElementById("botResponse");
@@ -7,7 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submitBtn");
   const clearBtn = document.getElementById("clearBtn");
 
-  const conversation = [];
+  const conversation = [
+    {
+      role: "system",
+      content:
+        "당신은 친절하고 유머러스한 핑핑봇입니다. 사용자의 감정 상태에 맞춰 답해 주세요."
+    }
+  ];
+
 
   const colorMap = {
     random: "#ffffff",
@@ -15,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sadness: "#CCE0FF",
     anger: "#FFDACC",
     disgust: "#E2FFE2",
-    fear: "#FFE2F7",
+    fear: "#FFE2F7"
   };
   const moodMap = {
     random: "로딩 중...",
@@ -23,76 +30,72 @@ document.addEventListener("DOMContentLoaded", () => {
     sadness: "Sadness",
     anger: "Anger",
     disgust: "Disgust",
-    fear: "Fear",
+    fear: "Fear"
   };
   function updateTheme(key) {
-    pingpingMood.textContent = `오늘 핑핑이의 감정 상태: ${moodMap[key] || key}`;
+    pingpingMood.textContent = `오늘 핑핑이의 감정 상태: ${moodMap[key]}`;
     document.querySelector(".container").style.backgroundColor =
-      colorMap[key] || "#ffffff";
+      colorMap[key];
   }
-
   updateTheme(themeSelect.value);
   themeSelect.addEventListener("change", () => {
     updateTheme(themeSelect.value);
   });
 
-
   function appendMessage(sender, text) {
-    const wrapper = document.createElement("div");
-    wrapper.classList.add(sender === "user" ? "user-message" : "bot-message");
-    wrapper.classList.add("message");
+    const wrap = document.createElement("div");
+    wrap.classList.add(sender === "user" ? "user-message" : "bot-message");
+    wrap.classList.add("message");
 
     const p = document.createElement("p");
     p.classList.add("message-text");
-    
     p.textContent = sender === "user" ? `너: ${text}` : `핑핑봇: ${text}`;
 
-    wrapper.appendChild(p);
-    chatBox.appendChild(wrapper);
+    wrap.appendChild(p);
+    chatBox.appendChild(wrap);
     chatBox.scrollTop = chatBox.scrollHeight;
   }
-
   function updateLastBot(text) {
     const bots = chatBox.querySelectorAll(".bot-message .message-text");
     if (!bots.length) return;
-    const last = bots[bots.length - 1];
-    last.textContent = `핑핑봇: ${text}`;
+    bots[bots.length - 1].textContent = `핑핑봇: ${text}`;
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  async function sendToClaude(messages) {
+  async function sendToClaude(conv) {
     const res = await fetch("/api/pingping", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({
+        system: conv[0].content,   
+        messages: conv.slice(1)   
+      })
     });
-    if (!res.ok) {
-      throw new Error(`Claude API 오류: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`API 오류 ${res.status}`);
     const { reply } = await res.json();
     return reply;
   }
 
+
   async function handleSend() {
     const text = userInput.value.trim();
     if (!text) return;
+
     appendMessage("user", text);
     userInput.value = "";
 
     conversation.push({ role: "user", content: text });
-
-    appendMessage("bot", "응답 대기중...");
+    appendMessage("bot", "⏳ 응답 대기중...");
 
     try {
       const reply = await sendToClaude(conversation);
       conversation.push({ role: "assistant", content: reply });
-      updateLastBot(reply || "응답X");
+      updateLastBot(reply ?? "⚠ 응답 없음");
     } catch (e) {
       console.error(e);
-      updateLastBot("서버가 응답하지 않음");
+      updateLastBot("❌ 서버가 응답하지 않음");
     }
   }
-
   submitBtn.addEventListener("click", handleSend);
   userInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -101,9 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
   clearBtn.addEventListener("click", () => {
     chatBox.innerHTML = "";
-    conversation.length = 0;
+    conversation.splice(1);
     userInput.value = "";
     themeSelect.value = "random";
     updateTheme("random");
