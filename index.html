@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>핑핑</title>
+  <title>핑핑봇</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="chat-container">
+  <div class="container">
     <h1>핑핑</h1>
     <div id="pingpingMood">오늘 핑핑이의 감정 상태: 로딩 중...</div>
     <select id="themeSelect">
@@ -18,10 +18,12 @@
       <option value="disgust">🤢 Disgust</option>
       <option value="fear">😱 Fear</option>
     </select>
-    <div id="botResponse" class="response-box"></div>
-    <input id="userInput" placeholder="무슨 말이든 해봐!" />
-    <button id="submitBtn">전송</button>
-    <button id="clearBtn">초기화</button>
+    <div id="botResponse" class="chat-box"></div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="어떤 말이든 해봐!" style="font-family: 'YoonChildfundkoreaManSeh';"/>
+      <button id="submitBtn">전송</button>
+      <button id="clearBtn">초기화</button>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>

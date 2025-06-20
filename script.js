@@ -1,6 +1,6 @@
 const input = document.getElementById("userInput");
 const btn = document.getElementById("submitBtn");
-const responseContainer = document.getElementById("botResponse");
+const response = document.getElementById("botResponse");
 const moodBox = document.getElementById("pingpingMood");
 const clearBtn = document.getElementById("clearBtn");
 const themeSelect = document.getElementById("themeSelect");
@@ -18,34 +18,39 @@ const emotions = [
 ];
 
 function applyTheme(themeKey) {
-  emotions.forEach(e => document.body.classList.remove(e.theme));
-  const sel = emotions.find(e => e.theme === themeKey);
-  if (!sel) return;
-  document.body.classList.add(themeKey);
-  moodBox.textContent = `오늘 핑핑이의 감정 상태: ${sel.mood}`;
-  themeSelect.value = themeKey;
+  const selected = emotions.find(e => e.theme === themeKey);
+  if (!selected) return;
+  document.body.className = themeKey;
+  moodBox.textContent = `오늘 핑핑이의 감정 상태: ${selected.mood}`;
 }
 
 function setRandomTheme() {
   const { mood, theme } = emotions[Math.floor(Math.random() * emotions.length)];
-  applyTheme(theme);
+  document.body.className = theme;
+  moodBox.textContent = `오늘 핑핑이의 감정 상태: ${mood}`;
+  themeSelect.value = "random";
 }
 
 themeSelect.addEventListener("change", () => {
-  themeSelect.value === "random" ? setRandomTheme() : applyTheme(themeSelect.value);
+  const selected = themeSelect.value;
+  if (selected === "random") {
+    setRandomTheme();
+  } else {
+    applyTheme(selected);
+  }
 });
 
 setRandomTheme();
 
 function renderLog() {
-  responseContainer.innerHTML = "";
-  conversationLog.forEach(({role, text}) => {
+  response.innerHTML = "";
+  for (const { role, text } of conversationLog) {
     const msg = document.createElement("div");
-    msg.className = role === "user" ? "user-msg" : "response";
+    msg.className = role === "user" ? "user-msg" : "bot-msg";
     msg.textContent = text;
-    responseContainer.appendChild(msg);
-  });
-  responseContainer.scrollTop = responseContainer.scrollHeight;
+    response.appendChild(msg);
+  }
+  response.scrollTop = response.scrollHeight;
 }
 
 btn.addEventListener("click", async () => {
@@ -55,11 +60,11 @@ btn.addEventListener("click", async () => {
   conversationLog.push({ role: "user", text: userText });
   renderLog();
 
-  const waitingDiv = document.createElement("div");
-  waitingDiv.className = "response waiting";
-  waitingDiv.textContent = "핑핑봇: ...생각 중...";
-  responseContainer.appendChild(waitingDiv);
-  responseContainer.scrollTop = responseContainer.scrollHeight;
+  const loadingBox = document.createElement("div");
+  loadingBox.className = "bot-msg";
+  loadingBox.textContent = "핑핑봇: ...생각 중...";
+  response.appendChild(loadingBox);
+  response.scrollTop = response.scrollHeight;
 
   try {
     const res = await fetch(endpoint, {
@@ -67,28 +72,32 @@ btn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         messages: [
-          { role: "system", content: "너는 감정 테마 기반 병맛 챗봇 핑핑이야. 짧고 시니컬한 대답을 해." },
+          {
+            role: "system",
+            content: "너는 핑핑이라는 감정 기반 병맛 챗봇이야. 인사이드 아웃 감정 테마를 기반으로 한 시니컬하고 짧은 대답을 해."
+          },
           ...conversationLog.map(c => ({ role: c.role, content: c.text }))
         ]
       })
     });
 
     const data = await res.json();
-    const gptReply = data.choices?.[0]?.message?.content?.trim() || "⚠️ 응답 없음. 콘솔 확인 ㄱ";
+    const gptReply = data.choices?.[0]?.message?.content || "⚠️ 응답 없음. 콘솔 확인 ㄱ";
 
     conversationLog.push({ role: "assistant", text: `핑핑봇: ${gptReply}` });
     localStorage.setItem("pingpingLog", JSON.stringify(conversationLog));
     renderLog();
-
   } catch (err) {
-    waitingDiv.textContent = "❌ 서버가 응답하지 않음";
+    loadingBox.textContent = "❌ 서버가 응답하지 않음";
     console.error("🔥 fetch 실패:", err);
   }
 
   input.value = "";
 });
 
-input.addEventListener("keydown", e => { if (e.key === "Enter") btn.click(); });
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") btn.click();
+});
 
 clearBtn.addEventListener("click", () => {
   conversationLog = [];
@@ -96,5 +105,4 @@ clearBtn.addEventListener("click", () => {
   renderLog();
 });
 
-// 초기 로그 렌더
 renderLog();
