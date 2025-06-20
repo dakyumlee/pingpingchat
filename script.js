@@ -1,6 +1,3 @@
-console.log("API_KEY exists:", !!API_KEY);
-console.log("API_KEY length:", API_KEY?.length);
-  
   document.addEventListener("DOMContentLoaded", () => {
   const themeSelect = document.getElementById("themeSelect");
   const pingpingMood = document.getElementById("pingpingMood");

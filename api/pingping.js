@@ -1,3 +1,7 @@
+const API_KEY = process.env.ANTHROPIC_API_KEY;
+console.log("API_KEY exists:", !!API_KEY);
+console.log("API_KEY length:", API_KEY?.length);
+
 export default async function handler(req, res) {
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method Not Allowed" });
