@@ -1,4 +1,3 @@
-
 const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const endpoint = isLocal
   ? "http://localhost:3001/pingping"
@@ -43,19 +42,22 @@ document.addEventListener("DOMContentLoaded", () => {
     fear:    "#f2e6ff"
   };
 
+
   updateMood(themeSelect.value);
 
-  
 
   themeSelect.addEventListener("change", () => {
     updateMood(themeSelect.value);
   });
 
+
   clearBtn.addEventListener("click", () => {
     botBox.innerHTML = "";
   });
 
+
   submitBtn.addEventListener("click", sendMessage);
+
 
   userInput.addEventListener("keydown", e => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -63,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sendMessage();
     }
   });
+
 
   async function sendMessage() {
     const txt = userInput.value.trim();
@@ -77,14 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
       updateLastBot(rep);
     } catch (err) {
       console.error(err);
-      updateLastBot("너랑 말 안 할래!");
+      updateLastBot("❌ 서버가 응답하지 않음");
     }
   }
 
   function updateMood(key) {
-
     pingpingMood.textContent = `오늘 핑핑이의 감정 상태: ${moodMap[key]}`;
-
     container.style.backgroundColor = colorMap[key];
     container.classList.remove(
       "mood-random","mood-joy","mood-sadness",
@@ -96,14 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function appendMessage(who, msg) {
     const div = document.createElement("div");
     div.className = who === "user" ? "user-message" : "bot-message";
-    div.textContent = (who === "user" ? "너: " : "핑핑: ") + msg;
+    div.textContent = (who === "user" ? "너: " : "핑핑봇: ") + msg;
     botBox.append(div);
     div.scrollIntoView({ block: "end" });
   }
 
   function updateLastBot(msg) {
     const bots = botBox.querySelectorAll(".bot-message");
-    if (bots.length) bots[bots.length - 1].textContent = `핑핑: ${msg}`;
+    if (bots.length) bots[bots.length - 1].textContent = `핑핑봇: ${msg}`;
   }
 });
-
