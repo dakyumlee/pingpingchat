@@ -1,29 +1,12 @@
 {
-  "name": "pingping",
+  "name": "psychopath-diary-site",
   "version": "1.0.0",
-  "type": "module",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
-  },
+  "description": "조현병 관련 사이트",
+  "main": "index.html",
   "dependencies": {
-    "body-parser": "^1.20.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^4.21.2",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^2.6.7"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dakyumlee/pingpingchat.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dakyumlee/pingpingchat/issues"
-  },
-  "homepage": "https://github.com/dakyumlee/pingpingchat#readme",
-  "description": ""
+  "engines": {
+    "node": "18.x"
+  }
 }
