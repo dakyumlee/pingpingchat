@@ -271,7 +271,13 @@ document.addEventListener("DOMContentLoaded", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages })
     });
-    if (!res.ok) throw new Error("API error");
+    
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("API Error:", res.status, errorText);
+      throw new Error(`API error: ${res.status}`);
+    }
+    
     const { reply } = await res.json();
     return reply;
   }
